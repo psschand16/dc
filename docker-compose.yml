@@ -1,0 +1,33 @@
+version: '3'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+  goaccess:
+    image: xavierh/goaccess-for-nginxproxymanager:latest
+    container_name: goaccess
+    restart: always
+    environment:
+        - TZ=America/New_York
+        - SKIP_ARCHIVED_LOGS=False #optional
+        - DEBUG=False #optional
+        - BASIC_AUTH=False #optional
+        - BASIC_AUTH_USERNAME=user #optional
+        - BASIC_AUTH_PASSWORD=pass #optional
+        - EXCLUDE_IPS=127.0.0.1 #optional - comma delimited list                
+    ports:
+        - '7880:7880'
+    volumes:
+        - /path/to/host/nginx/logs:/opt/log
+
+# networks:
+#   default:
+#     external: false
+#     name: whatevernameyougaveit
