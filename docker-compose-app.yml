@@ -23,23 +23,11 @@ services:
         - BASIC_AUTH_PASSWORD=pass #optional
         - EXCLUDE_IPS=127.0.0.1 #optional - comma delimited list                
     ports:
-        - '127.0.0.1:7880:7880'
+        - '7880:7880'
     volumes:
         - ./data/logs:/opt/log:/opt/log
-  portainer:
-    image: 'portainer/portainer-ce'
-    restart: unless-stopped
-    ports:
-      - '127.0.0.1:8000:8000'
-      - '127.0.0.1:9000:9000'
-    volumes:
-      -  /var/run/docker.sock:/var/run/docker.sock
-      - portainer_data:/data
-
-volumes:
-  portainer_data:
 
 networks:
   default:
-    external: false
+    external: true
     name: nginxnetwork

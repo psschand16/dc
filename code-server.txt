@@ -1,0 +1,171 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-20-04
+
+sudo iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
+sudo netfilter-persistent save
+
+sudo ufw enable
+sudo ufw allow http
+ufw allow ssh
+ufw allow 'Nginx Full'
+sudo ufw reload
+
+sudo apt install nginx -y
+sudo systemctl status nginx
+sudo systemctl enable nginx
+sudo systemctl restart nginx
+sudo nginx -t
+
+curl -4 icanhazip.com
+
+============
+[Unit]
+
+Description=Code Server Service
+
+After=network.target
+
+
+
+[Service]
+
+Type=simple
+
+Restart=on-failure
+
+RestartSec=10
+
+WorkingDirectory=/home/code-server
+
+Environment="PASSWORD=omgam"
+
+ExecStart=/home/code-server/code-server --port 8000
+
+StandardOutput=file:/var/log/code-server-output.log
+
+StandardError=file:/var/log/code-server-error.log
+
+
+
+[Install]
+
+WantedBy=multi-user.target
+==============================================
+==============================================
+apt-get update -y
+
+sudo snap install code-server --edge 
+
+
+
+echo "[Unit]
+Description=code-server
+After=nginx.service
+
+[Service]
+Type=simple
+Environment=PASSWORD=secure-password
+ExecStart=/usr/bin/code-server --bind-addr 127.0.0.1:8080 --user-data-dir /var/lib/code-server --
+auth password
+Restart=always
+
+[Install]
+WantedBy=multi-user.target" | sudo tee /lib/systemd/system/code-server.service
+
+# cat /lib/systemd/system/code-server.service
+# echo "blacklist snd_hda_intel" | sudo tee -a /etc/modprobe.d/sound.blacklist.conf
+
+systemctl daemon-reload
+
+systemctl start code-server
+systemctl enable code-server
+
+systemctl status code-server
+sudo apt-get install nginx -y
+
+echo "server_names_hash_bucket_size 64;
+
+server {
+listen 80;
+
+server_name code.example.com;
+
+location / {
+proxy_pass http://localhost:8080/;
+proxy_set_header Upgrade $http_upgrade;
+proxy_set_header Connection upgrade;
+proxy_set_header Accept-Encoding gzip;
+}
+}" | sudo tee /etc/nginx/sites-available/code-cloud.conf
+
+# Save and close the file then, activate the Nginx virtual host with the following command:
+
+sudo ln -s /etc/nginx/sites-available/code-cloud.conf /etc/nginx/sites-enabled/
+
+# Next, check Nginx for any syntax errors with the following command:
+
+nginx -t
+
+systemctl restart nginx
+===============================================
+
+
+sudo apt-get update -y
+
+sudo apt-get install nginx -y
+
+
+
+echo "server {
+
+  listen 80;
+
+  listen [::]:80;
+
+  server_name example.com www.example.com;
+
+  location / {
+
+      proxy_pass http://localhost:8000/;
+
+      proxy_set_header Host $host;
+
+      proxy_set_header Upgrade $http_upgrade;
+
+      proxy_set_header Connection upgrade;
+
+      proxy_set_header Accept-Encoding gzip;
+
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+  }
+
+}" | sudo tee /etc/nginx/sites-available/code-server
+
+sudo nginx -t
+sudo systemctl status nginx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ===============
+# Do the following:
+
+# $ echo 'something' | sudo tee -a file.txt
+# - or -
+# $ echo 'something' | sudo tee --append file.txt
+# As an alternative to the tee command you can simply make sure the redirection happens in a shell with the right permissions:
+# $ sudo bash -c "echo 'something' > file.txt"
+# $ sudo bash -c "echo 'something' >> file.txt"
