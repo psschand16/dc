@@ -26,7 +26,7 @@ apt-cache policy docker-ce
 sudo apt-get install docker-ce -y
 #sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 # -------------------------------------------------------------------------------------------------
-sleep 3
+sleep 1
 
 sudo usermod -aG docker ${USER}
 
@@ -36,7 +36,7 @@ echo "Instaling docker-compose......."
 
 sudo apt install jq -y
 
-sleep 2
+sleep 1
 
 DOCKER_COMPOSE_VERSION=$(curl --silent https://api.github.com/repos/docker/compose/releases/latest | jq .name -r)
 DOCKER_CLI_PLUGIN_PATH=/usr/local/lib/docker/cli-plugins
@@ -46,7 +46,7 @@ sudo chmod +x $DOCKER_CLI_PLUGIN_PATH/docker-compose
 sleep 3
 sudo ln -s  $DOCKER_CLI_PLUGIN_PATH/docker-compose /usr/local/bin/docker-compose
 
-sleep 4
+sleep 2
 echo "########################################################"
 sudo docker -v
 sudo docker-compose --version
