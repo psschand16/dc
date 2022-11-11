@@ -10,22 +10,22 @@ services:
     volumes:
       - ./data:/data
       - ./letsencrypt:/etc/letsencrypt
-  goaccess:
-    image: xavierh/goaccess-for-nginxproxymanager:latest
-    container_name: goaccess
-    restart: always
-    environment:
-        - TZ=America/New_York
-        - SKIP_ARCHIVED_LOGS=False #optional
-        - DEBUG=False #optional
-        - BASIC_AUTH=False #optional
-        - BASIC_AUTH_USERNAME=user #optional
-        - BASIC_AUTH_PASSWORD=pass #optional
-        - EXCLUDE_IPS=127.0.0.1 #optional - comma delimited list                
-    ports:
-        - '127.0.0.1:7880:7880'
-    volumes:
-        - ./data/logs:/opt/log:/opt/log
+  # goaccess:
+  #   image: xavierh/goaccess-for-nginxproxymanager:latest
+  #   container_name: goaccess
+  #   restart: always
+  #   environment:
+  #       - TZ=America/New_York
+  #       - SKIP_ARCHIVED_LOGS=False #optional
+  #       - DEBUG=False #optional
+  #       - BASIC_AUTH=False #optional
+  #       - BASIC_AUTH_USERNAME=user #optional
+  #       - BASIC_AUTH_PASSWORD=pass #optional
+  #       - EXCLUDE_IPS=127.0.0.1 #optional - comma delimited list                
+  #   ports:
+  #       - '127.0.0.1:7880:7880'
+  #   volumes:
+  #       - ./data/logs:/opt/log:/opt/log
 #   portainer:
 #     image: 'portainer/portainer-ce'
 #     restart: unless-stopped
