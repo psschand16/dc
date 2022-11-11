@@ -63,3 +63,4 @@ sudo apt update -y
 sudo apt install snapd -y
 sudo snap install snap-store 
 sudo snap install code-server --edge 
+sudo code-server --port 8001
