@@ -56,7 +56,9 @@ echo "########################################################"
 
 # docker run -d  -p 9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
 echo "#######################snaps#################################"
-sleep 6
+export PASSWORD=omgam
+echo $PASSWORD
+sleep 1
 sudo apt update -y
 sudo apt install snapd -y
 sudo snap install snap-store 
