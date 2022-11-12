@@ -1,0 +1,91 @@
+version: '3'
+
+services:
+
+  mybunker:
+    image: bunkerity/bunkerweb:1.4.4
+    ports:
+      - 80:8080
+      - 443:8443
+    volumes:
+      - bw-data:/data
+      - bw-confs:/etc/nginx
+    environment:
+      - MULTISITE=yes
+      - SERVER_NAME=app1.example.com app2.example.com app3.example.com
+      - USE_REVERSE_PROXY=yes
+      - REVERSE_PROXY_URL=/
+      - app1.example.com_REVERSE_PROXY_HOST=http://myapp1
+      - app2.example.com_REVERSE_PROXY_HOST=http://myapp2
+      - app3.example.com_REVERSE_PROXY_HOST=http://myapp3
+      - API_WHITELIST_IP=127.0.0.0/8 10.20.30.0/24
+    labels:
+      - "bunkerweb.UI"
+    networks:
+      - bw-services
+      - bw-ui
+  myui:
+    image: bunkerity/bunkerweb-ui:1.4.4
+    depends_on:
+      - mydocker
+    ports:
+      - 7000:7000
+    networks:
+      - bw-ui
+      - bw-docker
+    volumes:
+      - bw-data:/data
+      - bw-confs:/etc/nginx
+    environment:
+      - DOCKER_HOST=tcp://mydocker:2375
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=changeme
+      # - ABSOLUTE_URI=http(s)://bwadm.example.com/changeme/
+
+  mydocker:
+    image: tecnativa/docker-socket-proxy
+    networks:
+      - bw-docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - CONTAINERS=1
+      
+  myapp1:
+    image: nginxdemos/hello:plain-text
+    ports:
+      - 801:80
+    networks:
+      - bw-net
+
+  myapp2:
+    image: nginxdemos/hello:plain-text
+    ports:
+      - 802:80  
+    networks:
+      - bw-net
+
+  myapp3:
+    image: nginxdemos/hello:plain-text
+    ports:
+      - 803:80 
+    networks:
+      - bw-net
+
+volumes:
+  bw-data:
+  bw-confs:
+
+networks:
+  bw-services:
+  bw-net:
+    name: bw-net
+  bw-ui:
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.20.30.0/24
+  bw-docker:
+
+
+  

@@ -63,7 +63,8 @@ sudo apt install snapd -y
 sudo snap install snap-store 
 # sudo snap install code --classic 
 sudo snap install codium --classic 
-# sudo snap install code-server --edge 
+sudo snap install 
+code-server --edge 
 
 # ============uninstall================
 # dpkg -l | grep -i docker

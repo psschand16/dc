@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+
+  mybunker:
+    image: bunkerity/bunkerweb:latest
+    ports:
+      - 80:8080
+      - 443:8443
+    volumes:
+      - bw-data:/data
+    environment:
+      - MULTISITE=yes
+      - SERVER_NAME=app1.example.com app2.example.com app3.example.com
+      - USE_REVERSE_PROXY=yes
+      - REVERSE_PROXY_URL=/
+      - app1.example.com_REVERSE_PROXY_HOST=http://myapp1
+      - app2.example.com_REVERSE_PROXY_HOST=http://myapp2
+      - app3.example.com_REVERSE_PROXY_HOST=http://myapp3
+    networks:
+      - bw-net
+
+  myapp1:
+    image: nginxdemos/hello:plain-text
+    networks:
+      - bw-net
+
+  myapp2:
+    image: nginxdemos/hello:plain-text
+    networks:
+      - bw-net
+
+  myapp3:
+    image: nginxdemos/hello:plain-text
+    networks:
+      - bw-net
+
+volumes:
+  bw-data:
+
+networks:
+  bw-net:
+    name: bw-net

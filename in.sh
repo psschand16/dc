@@ -123,8 +123,15 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install ubuntu-mate-core -y
 echo "starting mate desktop......"
 sudo DEBIAN_FRONTEND=noninteractive apt-get install ubuntu-mate-desktop -y 
 ====================
+sudo apt install ubuntu-mate-core  ubuntu-mate-desktop -y 
 
-sudo apt-get install ubuntu-mate-core -y
+
+sudo apt remove --purge ubuntu-mate-core  ubuntu-mate-desktop xrdp  -y 
+sudo apt remove --purge ubuntu-mate-desktop -y 
+sudo apt-get autoremove
+sudo apt-get remove --auto-remove 
+sudo apt install  ubuntu-mate-core -y
+sudo apt install  ubuntu-mate-desktop -y
 Package configuration
 
  ┌──────────────────────────────────────────────┤ Configuring lightdm ├───────────────────────────────────────────────┐
@@ -149,3 +156,9 @@ Package configuration
                                            │                                │ 
                                            └────────────────────────────────┘ 
                                                                               
+
+
+sudo apt-get install  ubuntu-mate-desktop -y
+
+echo mate-session >~/.xsession
+sudo service xrdp restart
