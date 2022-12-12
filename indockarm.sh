@@ -60,12 +60,45 @@ echo "########################################################"
 # sudo docker run -d  -p 127.0.0.1:9000:9000 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce
 
 #  0.0.0.0:9000->9000/tcp
-echo "#######################snaps#################################"
-export PASSWORD=omgam
-echo $PASSWORD
-sleep 1
-sudo apt update -y
-sudo apt install snapd -y
-sudo snap install snap-store 
-sudo snap install code-server --edge 
-sudo code-server --port 8001
+# echo "#######################snaps#################################"
+# export PASSWORD=omgam
+# echo $PASSWORD
+# sleep 1
+# sudo apt update -y
+# sudo apt install snapd -y
+# sudo snap install snap-store 
+# sudo snap install code-server --edge 
+# sudo code-server --port 8001
+
+# ===========================================
+# install codeserver
+curl -fOL https://github.com/coder/code-server/releases/download/v$VERSION/code-server_${VERSION}_amd64.deb
+sudo dpkg -i code-server_${VERSION}_amd64.deb
+sudo systemctl enable --now code-server@$USER
+# Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml
+sleep 2
+# =============================================
+# https://coder.com/docs/code-server/latest/guide#using-lets-encrypt-with-caddy
+# install caddy
+sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg
+curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list
+sudo apt update
+sudo apt install caddy
+
+sudo systemctl reload caddy
+
+
+
+# ============================================
+
+# cat /etc/caddy/Caddyfile
+
+# sudo mv /etc/caddy/Caddyfile .
+
+sudo PORT=8001 PASSWORD=omgam1 code-server
+sudo caddy reload  Caddyfile
+sudo systemctl restart caddy
+sudo systemctl reload caddy
+# sudo caddy run
+# sudo kill $(sudo lsof -t -i:2019)
