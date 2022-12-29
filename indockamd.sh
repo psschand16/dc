@@ -71,9 +71,12 @@ echo "########################################################"
 
 # ===========================================
 # install codeserver
-curl -fOL https://github.com/coder/code-server/releases/download/v$VERSION/code-server_${VERSION}_amd64.deb
-sudo dpkg -i code-server_${VERSION}_amd64.deb
-sudo systemctl enable --now code-server@$USER
+curl -fOL https://github.com/coder/code-server/releases/download/v4.9.1/code-server_4.9.1_amd64.deb
+# curl -fOL https://github.com/coder/code-server/releases/download/v4.9.1/code-server_4.9.1_arm64.deb
+# curl -fOL https://github.com/coder/code-server/releases/download/v$VERSION/code-server_${VERSION}_amd64.deb
+# sudo dpkg -i code-server_${VERSION}_amd64.deb
+sudo dpkg -i code-server_4.9.1_amd64.deb
+sudo systemctl enable --now code-server@$USER 
 # Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml
 sleep 2
 # =============================================
@@ -87,8 +90,10 @@ sudo apt install caddy
 
 sudo systemctl reload caddy
 
-
-
+sudo ufw allow 80
+sudo ufw allow 81
+sudo ufw allow 8001
+sudo ufw allow 9000
 # ============================================
 
 # cat /etc/caddy/Caddyfile
@@ -101,3 +106,6 @@ sudo systemctl restart caddy
 sudo systemctl reload caddy
 # sudo caddy run
 # sudo kill $(sudo lsof -t -i:2019)
+# sudo ufw allow 9000,80,81,8001 
+# sudo ufw --force enable && sudo ufw allow 3389 && sudo ufw status 
+# sudo ufw reload

@@ -87,9 +87,9 @@ sudo apt update
 sudo apt install caddy
 
 sudo systemctl reload caddy
-
-
-
+# sudo ufw allow 9000,80,81,8001 
+# sudo ufw --force enable && sudo ufw allow 3389 && sudo ufw status 
+# sudo ufw reload
 # ============================================
 
 # cat /etc/caddy/Caddyfile
