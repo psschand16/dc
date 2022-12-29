@@ -104,6 +104,9 @@ sudo PORT=8001 PASSWORD=omgam1 code-server
 sudo caddy reload  Caddyfile
 sudo systemctl restart caddy
 sudo systemctl reload caddy
+sudo caddy reload  Caddyfile
+sudo systemctl restart caddy
+sudo systemctl reload caddy
 # sudo caddy run
 # sudo kill $(sudo lsof -t -i:2019)
 # sudo ufw allow 9000,80,81,8001 
